@@ -11,14 +11,13 @@ import java.util.List;
 @Entity
 public class Person {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
     String firstName = "";
     String lastName = "";
 
     List<Person> personList;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    Long id = 0L;
 
     public Person(String firstName, String lastName) {
         this.firstName = firstName;
@@ -26,40 +25,45 @@ public class Person {
         this.personList = new ArrayList<>();
     }
 
-    private Person createPerson(Person p) {
-        if (p != null) {
-            personList.add(new Person(p.firstName, p.lastName));
-            return p;
-        } else throw new IllegalArgumentException();
+    public Integer getId() {
+        return id;
     }
 
-    private Person getPerson(int id) {
-
-        return this.personList.get(id);
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    private List<Person> getPersonList() {
-        return this.personList;
+    public String getFirstName() {
+        return firstName;
     }
 
-    private Person updatePerson(Person p) {
-        if (p != null && this.personList.contains(p)) {
-            int index = this.personList.indexOf(p);
-            this.personList.get(index).firstName = p.firstName;
-            this.personList.get(index).firstName = p.lastName;
-            return p;
-        } else throw new IllegalArgumentException();
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    private void deletePerson(int id) {
-
-        if (this.personList.contains(personList.get(id))) {
-            this.personList.remove(id);
-        } else throw new IllegalArgumentException();
+    public String getLastName() {
+        return lastName;
     }
 
-        public Long getId () {
-            return id;
-        }
-
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
+
+    public List<Person> getPersonList() {
+        return personList;
+    }
+
+    public void setPersonList(List<Person> personList) {
+        this.personList = personList;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", personList=" + personList +
+                '}';
+    }
+}
