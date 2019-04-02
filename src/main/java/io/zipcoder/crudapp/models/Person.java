@@ -5,8 +5,6 @@ import javax.persistence.Id;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 public class Person {
@@ -54,14 +52,6 @@ public class Person {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-
-//    public List<Person> getPersonList() {
-//        return personList;
-//    }
-//
-//    public void setPersonList(List<Person> personList) {
-//        this.personList = personList;
-//    }
 
     @Override
     public String toString() {

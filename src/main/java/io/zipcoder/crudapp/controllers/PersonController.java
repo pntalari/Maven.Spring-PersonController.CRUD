@@ -8,9 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 @RestController
 @RequestMapping
@@ -42,7 +39,6 @@ public class PersonController {
     @PostMapping("/people/")
     public ResponseEntity<Person> create(@RequestBody Person person) {
         LOG.info("Creating new Person: {}", person);
-        // Iterable<Person> personList = personService.findAll();
         return new ResponseEntity<>(personService.create(person), HttpStatus.CREATED);
     }
 
