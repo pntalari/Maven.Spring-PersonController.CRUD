@@ -1,6 +1,6 @@
 package io.zipcoder.crudapp.models;
 
-import org.springframework.data.annotation.Id;
+import javax.persistence.Id;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,15 +14,21 @@ public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
     String firstName = "";
     String lastName = "";
 
-    List<Person> personList;
+    public Person() {
+    }
 
     public Person(String firstName, String lastName) {
+        this(null,firstName,lastName);
+    }
+
+    public Person(Integer id, String firstName, String lastName) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.personList = new ArrayList<>();
     }
 
     public Integer getId() {
@@ -49,13 +55,13 @@ public class Person {
         this.lastName = lastName;
     }
 
-    public List<Person> getPersonList() {
-        return personList;
-    }
-
-    public void setPersonList(List<Person> personList) {
-        this.personList = personList;
-    }
+//    public List<Person> getPersonList() {
+//        return personList;
+//    }
+//
+//    public void setPersonList(List<Person> personList) {
+//        this.personList = personList;
+//    }
 
     @Override
     public String toString() {
@@ -63,7 +69,6 @@ public class Person {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", personList=" + personList +
                 '}';
     }
 }

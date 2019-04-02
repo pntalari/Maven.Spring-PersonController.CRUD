@@ -3,7 +3,7 @@ package io.zipcoder.crudapp.services;
 import io.zipcoder.crudapp.models.Person;
 import io.zipcoder.crudapp.repositories.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.annotation.Id;
+import javax.persistence.Id;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.GeneratedValue;
@@ -15,10 +15,9 @@ import java.util.List;
 @Service
 public class PersonService {
 
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private static Integer id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+//    private static Integer id;
 
     @Autowired
     private PersonRepository personRepository;
@@ -44,12 +43,16 @@ public class PersonService {
     }
 
     public Person create(Person p){
-        p.setId(id);
+       // p.setId(p.getId());
         return personRepository.save(p);
     }
 
     public Person update(Integer id, Person p){
-       return personRepository.save(p);
+        Person originalPerson = personRepository.findOne(id);
+        originalPerson.setLastName(p.getLastName());
+        originalPerson.setFirstName(p.getFirstName());
+
+       return personRepository.save(originalPerson);
     }
 
     public Boolean delete(Integer id){

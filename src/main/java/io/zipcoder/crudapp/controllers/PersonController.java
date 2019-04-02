@@ -34,6 +34,7 @@ public class PersonController {
         if (personService.findOne(id) != null) {
             return new ResponseEntity<>(personService.findOne(id), HttpStatus.OK);
         } else {
+            LOG.info("Found Person with ID: {}",id);
             return new ResponseEntity<>(personService.findOne(id), HttpStatus.NOT_FOUND);
         }
     }
@@ -42,7 +43,7 @@ public class PersonController {
     public ResponseEntity<Person> create(@RequestBody Person person) {
         LOG.info("Creating new Person: {}", person);
         // Iterable<Person> personList = personService.findAll();
-        return new ResponseEntity<Person>(personService.create(person), HttpStatus.CREATED);
+        return new ResponseEntity<>(personService.create(person), HttpStatus.CREATED);
     }
 
     @PutMapping("/people/{id}")
@@ -53,10 +54,16 @@ public class PersonController {
             LOG.info("Unable to update, Person with id {} not found", id);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        currentPerson.setFirstName(person.getFirstName());
-        currentPerson.setLastName(person.getLastName());
 
-        return new ResponseEntity<>(currentPerson, HttpStatus.OK);
+        LOG.info("Updating Person: {}",id);
+
+        return new ResponseEntity<>(personService.update(id,person), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/people/{id}")
+    public ResponseEntity<Boolean> destroy(@PathVariable Integer id){
+        LOG.info("Deleting Person with ID: {}",id);
+        return new ResponseEntity<>(personService.delete(id),HttpStatus.OK);
     }
 
 }
