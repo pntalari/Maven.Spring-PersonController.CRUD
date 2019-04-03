@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.zipcoder.crudapp.models.Person;
 import io.zipcoder.crudapp.repositories.PersonRepository;
+import io.zipcoder.crudapp.services.PersonService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +24,7 @@ import javax.persistence.Entity;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -42,9 +44,9 @@ public class PersonControllerTest {
     //When
     BDDMockito
       .given(repository.findOne(givenId))
-      .willReturn(new Person(givenId, "First1", "Last1"));
+      .willReturn(new Person("First1", "Last1"));
     //Then
-    String expectedContent = "{\"id\":1,\"firstName\":\"First1\",\"lastName\":\"Last1\"}";
+    String expectedContent = "{\"id\":null,\"firstName\":\"First1\",\"lastName\":\"Last1\"}";
     this.mvc.perform(MockMvcRequestBuilders
       .get("/people/" + givenId))
       .andExpect(MockMvcResultMatchers.status().isOk())
@@ -54,14 +56,14 @@ public class PersonControllerTest {
   @Test
   public void testCreate() throws Exception{
     //Given
-    Person person = new Person(null,"First2","Last2");
+    Person person = new Person("First2","Last2");
     //When
     BDDMockito
       .given(repository.save(person))
       .willReturn(person);
 
     //Then
-    String expectedContent = "{\"id\":null,\"firstName\":\"First2\",\"lastName\":\"Last2\"}";
+    String expectedContent = "{\"id\":1,\"firstName\":\"First2\",\"lastName\":\"Last2\"}";
     this.mvc.perform(MockMvcRequestBuilders
     .post("/people/")
       .content(expectedContent)
@@ -70,6 +72,36 @@ public class PersonControllerTest {
     )
       .andExpect(MockMvcResultMatchers.status().isCreated())
       .andExpect(MockMvcResultMatchers.content().string(expectedContent));
+  }
+
+  @Test
+  public void testCreateMock(){
+    Person person = new Person();
+    Integer id = 1;
+    PersonRepository mockRepo = mock(PersonRepository.class);
+    when(mockRepo.save(person)).thenReturn(new Person(1,"test1","test2"));
+
+    //creating service with the mock
+    PersonService service = new PersonService(mockRepo);
+
+    Person actualPerson = service.create(person);
+
+    Assert.assertEquals(id,actualPerson.getId());
+  }
+
+  @Test
+  public void testDelete(){
+    Person person = new Person();
+
+    PersonRepository mockRepo = mock(PersonRepository.class);
+  //  when(mockRepo.save(person)).thenReturn(new Person(1,"test1","test2"));
+
+    //creating service with the mock
+    PersonService service = new PersonService(mockRepo);
+
+   service.delete(person);
+
+   verify(mockRepo).delete(person);
   }
 
 }

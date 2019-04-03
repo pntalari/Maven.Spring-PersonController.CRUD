@@ -5,6 +5,7 @@ import javax.persistence.Id;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import java.util.Objects;
 
 @Entity
 public class Person {
@@ -20,7 +21,7 @@ public class Person {
     }
 
     public Person(String firstName, String lastName) {
-        this(null,firstName,lastName);
+      this(null,firstName,lastName);
     }
 
     public Person(Integer id, String firstName, String lastName) {
@@ -61,4 +62,19 @@ public class Person {
                 ", lastName='" + lastName + '\'' +
                 '}';
     }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Person person = (Person) o;
+    return id.equals(person.id) &&
+      firstName.equals(person.firstName) &&
+      lastName.equals(person.lastName);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, firstName, lastName);
+  }
 }

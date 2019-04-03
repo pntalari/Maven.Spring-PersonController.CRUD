@@ -36,8 +36,8 @@ public class PersonService {
        return personRepository.save(originalPerson);
     }
 
-    public Boolean delete(Integer id){
-        personRepository.delete(id);
+    public Boolean delete(Person p){
+        personRepository.delete(p);
         return true;
     }
 }

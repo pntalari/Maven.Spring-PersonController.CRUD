@@ -57,9 +57,9 @@ public class PersonController {
     }
 
     @DeleteMapping("/people/{id}")
-    public ResponseEntity<Boolean> destroy(@PathVariable Integer id){
-        LOG.info("Deleting Person with ID: {}",id);
-        return new ResponseEntity<>(personService.delete(id),HttpStatus.OK);
+    public ResponseEntity<Boolean> destroy(@PathVariable Person person){
+        LOG.info("Deleting Person: {}",person);
+        return new ResponseEntity<>(personService.delete(person),HttpStatus.OK);
     }
 
 }
